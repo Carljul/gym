@@ -1,0 +1,1 @@
+@include('pages.subscribers.template_form')
