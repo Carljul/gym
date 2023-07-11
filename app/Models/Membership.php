@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Person;
 use App\Models\MembershipType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,16 +17,33 @@ class Membership extends Model
 
     protected $fillable = [
         'person_id',
-        'membership_type_id'
+        'membership_type_id',
+        'start_date',
+        'end_date',
+    ];
+
+    protected $appends = [
+        'startingSubscription',
+        'endingSubscription'
     ];
 
     public function person() : HasOne
     {
-        return $this->hasOne(Person::class);
+        return $this->hasOne(Person::class, 'id', 'person_id');
     }
 
     public function membershipType() : HasOne
     {
-        return $this->hasOne(MembershipType::class);
+        return $this->hasOne(MembershipType::class, 'id', 'membership_type_id');
+    }
+
+    public function getStartingSubscriptionAttribute()
+    {
+        return Carbon::parse($this->start_date)->format('F d, Y');
+    }
+
+    public function getEndingSubscriptionAttribute()
+    {
+        return Carbon::parse($this->end_date)->format('F d, Y');
     }
 }

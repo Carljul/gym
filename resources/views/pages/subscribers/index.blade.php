@@ -8,6 +8,9 @@
                 <div class="card-header">{{ __('Subscriber') }}</div>
 
                 <div class="card-body">
+                    @if(Session::has('msg'))
+                        <div class="alert alert-success">{{ Session::get('msg') }}</div>
+                    @endif
                     <a href="{{route('subscriber.create')}}" class="btn btn-info">Add Subscriber</a>
                     <table class="table">
                         <thead>
@@ -18,6 +21,9 @@
                                 <th>Suffix</th>
                                 <th>Birth Date</th>
                                 <th>Subscription Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,16 +33,31 @@
                                     <td>{{$subscriber->person->middlename}}</td>
                                     <td>{{$subscriber->person->lastname}}</td>
                                     <td>{{$subscriber->person->suffix}}</td>
-                                    <td>{{$subscriber->person->birthdate}}</td>
+                                    <td>{{$subscriber->person->readableBirthdate}}</td>
                                     <td>{{$subscriber->membershipType->name}}</td>
+                                    <td>{{$subscriber->startingSubscription}}</td>
+                                    <td>{{$subscriber->endingSubscription}}</td>
+                                    <td>
+                                        <button class="btn btn-outline-primary">Health Info</button>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6">No Record Found</td>
+                                    <td colspan="9">No Record Found</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                {{ $subscribers->links() }}
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <p class="text-end">Showing {{$subscribers->firstItem()}} to {{$subscribers->lastItem()}} of total {{ $subscribers->total() }} entries</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

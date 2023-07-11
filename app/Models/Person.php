@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,4 +28,9 @@ class Person extends Model
     protected $dates = [
         'birthdate'
     ];
+
+    public function getReadableBirthdateAttribute()
+    {
+        return Carbon::parse($this->birthdate)->format('F d, Y');
+    }
 }

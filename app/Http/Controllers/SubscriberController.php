@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MembershipType;
 use App\Providers\SubscribersProvider;
 use App\Http\Requests\SubscriberRequest;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class SubscriberController extends Controller
      */
     public function create()
     {
-        return view('pages.subscribers.create');
+        $subscriptions = MembershipType::all();
+        return view('pages.subscribers.create', compact('subscriptions'));
     }
 
     /**
@@ -30,7 +32,13 @@ class SubscriberController extends Controller
      */
     public function store(SubscriberRequest $request)
     {
-        return SubscribersProvider::create($request);
+        $result = SubscribersProvider::create($request);
+
+        if ($result['success']) {
+            return redirect()->route('subscriber.index')->with(['msg' => $result['message']]);
+        }
+
+        return redirect()->back()->withErrors(['msg' => $result['message']]);
     }
 
     /**
@@ -52,9 +60,15 @@ class SubscriberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SubscriberRequest $request, string $id)
     {
-        //
+        $result = SubscribersProvider::update($request, $id);
+
+        if ($result['success']) {
+            return redirect()->route('subscriber.index');
+        }
+
+        return redirect()->back()->with(['msg' => $result['message']]);
     }
 
     /**

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('person_id')->references('id')->on('persons');
             $table->foreignId('membership_type_id')->references('id')->on('membership_types');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Auth;
+use App\Rules\SubscriptionEndDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubscriberRequest extends FormRequest
@@ -27,12 +28,13 @@ class SubscriberRequest extends FormRequest
             'middlename' => 'nullable',
             'lastname' => 'required|max:250',
             'suffix' => 'nullable',
-            'birthdate' => 'date',
+            'birthdate' => 'nullable|date|before:18 years ago',
             'email' => 'nullable|email|max:255|unique:persons',
-            'contact_number' => 'required',
+            'contact_number' => 'required||numeric|digits_between:10,12',
             'emergency_contact_name' => 'nullable',
-            'emergency_contact_number' => 'nullable',
-            'membership_type_id' => 'required|exists:membership_types,id'
+            'emergency_contact_number' => 'nullable||numeric|digits_between:10,12',
+            'membership_type_id' => 'required|exists:membership_types,id',
+            'subscription_start_date' => 'required|date|after_or_equal:today'
         ];
     }
 }

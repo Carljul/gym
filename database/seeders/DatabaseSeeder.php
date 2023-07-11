@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             DefaultMembershipTypes::class,
-            DefaultPaymentSchedules::class
+            DefaultPaymentSchedules::class,
+            DefaultUser::class
         ]);
     }
 }
